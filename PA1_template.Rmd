@@ -99,15 +99,8 @@ There is a difference. It seems that people walk more over the weekend.
 ```{r, echo=TRUE}
 data$dow <- as.factor(ifelse(as.POSIXlt(data$date)$wday %in% c(0,6), 'weekend', 'weekday'))
 
-weekdays = data[data$dow == 'weekday',]
-weekends = data[data$dow == 'weekend',]
-
-weekdays_timeline = aggregate(steps ~ interval, weekdays, mean)
-weekends_timeline = aggregate(steps ~ interval, weekends, mean)
-
-plot(weekends_timeline$interval, weekends_timeline$steps, type='l', xlab = 'Interval', ylab = 'Steps', col='black')
-lines(weekdays_timeline$interval, weekdays_timeline$steps, type='l', col='red')
-legend("topleft", c("weekends", "weekdays"), col = c('black', 'red'), lty = c(1, 1))
-title(main = 'Steps Taken over a Day')
+library(lattice) 
+aggregated = aggregate(steps ~ interval * dow, data, mean)
+xyplot(steps ~ interval | dow, main="", ylab="Steps", xlab="Interval", data=aggregated, type="l", layout=c(1,2))
 ```
 
