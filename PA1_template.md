@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 ```r
 library(dplyr)
@@ -32,11 +37,11 @@ data[sample(nrow(data), 5),]
 
 ```
 ##       steps       date interval
-## 4631      0 2012-10-17      150
-## 4397      0 2012-10-16      620
-## 1906      0 2012-10-07     1445
-## 11110     0 2012-11-08     1345
-## 11956   476 2012-11-11     1215
+## 12456     0 2012-11-13      555
+## 8113      0 2012-10-29      400
+## 9508      0 2012-11-03       15
+## 8851    148 2012-10-31     1730
+## 17414    NA 2012-11-30     1105
 ```
 
 ## What is mean total number of steps taken per day?
@@ -72,17 +77,18 @@ Total steps distribution:
 hist(total_steps, breaks=10)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 ## What is the average daily activity pattern?
 
 
 ```r
 timeline = aggregate(steps ~ interval, data, mean)
-plot(timeline, type='l')
+plot(timeline, type='l', xlab="Interval", ylab="Steps")
+title(main = 'Steps Taken over a Day')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 
 ```r
@@ -137,7 +143,7 @@ Total steps distribution:
 hist(total_steps_imputed, breaks=10)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 The mean and median of the total number of steps taken per day:
 
@@ -162,6 +168,7 @@ median(total_steps_imputed)
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
+There is a difference. It seems that people walk more over the weekend.
 
 
 ```r
@@ -173,9 +180,11 @@ weekends = data[data$dow == 'weekend',]
 weekdays_timeline = aggregate(steps ~ interval, weekdays, mean)
 weekends_timeline = aggregate(steps ~ interval, weekends, mean)
 
-plot(weekends_timeline$interval, weekends_timeline$steps, type='l')
+plot(weekends_timeline$interval, weekends_timeline$steps, type='l', xlab = 'Interval', ylab = 'Steps', col='black')
 lines(weekdays_timeline$interval, weekdays_timeline$steps, type='l', col='red')
+legend("topleft", c("weekends", "weekdays"), col = c('black', 'red'), lty = c(1, 1))
+title(main = 'Steps Taken over a Day')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 

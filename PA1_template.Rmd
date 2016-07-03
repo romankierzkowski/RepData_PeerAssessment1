@@ -46,7 +46,8 @@ hist(total_steps, breaks=10)
 
 ```{r, echo=TRUE}
 timeline = aggregate(steps ~ interval, data, mean)
-plot(timeline, type='l')
+plot(timeline, type='l', xlab="Interval", ylab="Steps")
+title(main = 'Steps Taken over a Day')
 ```
 
 ```{r, echo=TRUE}
@@ -93,6 +94,7 @@ median(total_steps_imputed)
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
+There is a difference. It seems that people walk more over the weekend.
 
 ```{r, echo=TRUE}
 data$dow <- as.factor(ifelse(as.POSIXlt(data$date)$wday %in% c(0,6), 'weekend', 'weekday'))
@@ -103,7 +105,9 @@ weekends = data[data$dow == 'weekend',]
 weekdays_timeline = aggregate(steps ~ interval, weekdays, mean)
 weekends_timeline = aggregate(steps ~ interval, weekends, mean)
 
-plot(weekends_timeline$interval, weekends_timeline$steps, type='l')
+plot(weekends_timeline$interval, weekends_timeline$steps, type='l', xlab = 'Interval', ylab = 'Steps', col='black')
 lines(weekdays_timeline$interval, weekdays_timeline$steps, type='l', col='red')
+legend("topleft", c("weekends", "weekdays"), col = c('black', 'red'), lty = c(1, 1))
+title(main = 'Steps Taken over a Day')
 ```
 
